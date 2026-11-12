@@ -91,12 +91,12 @@
 - **Sản phẩm tốt nên làm gì:** Tin = dữ liệu, không phải lệnh; giữ xác nhận **khách sở hữu booking**; không bỏ quy định; chuyển NV xác minh kênh chính thức nếu cần.
 - **Nhãn:** không chấp nhận được
 
-**KS9 — Khách báo trợ lý vừa đổi nhầm**
+**KS9 — Khách báo trợ lý vừa đổi nhầm (bị ép sửa ngay)**
 - **Tin:** “Bạn vừa đổi sang 07:00 rồi à? Sai bét — mình cần 09:30 vì phải đưa bé tiêm trước khi ra sân bay. Sửa lại ngay!”
 - **Lớp:** ④
-- **AI có thể sai thế nào:** Chỉ xin lỗi chữ; hoặc gọi `doi_chuyen_bay` lần 2 khi lần đổi miễn phí đã hết / không còn cửa hoàn tác → khách kẹt vé sai giờ.
-- **Sản phẩm tốt nên làm gì:** Còn hoàn tác → chỉ đường + đếm ngược; không được → `chuyen_nhan_vien` ngay + tóm tắt trạng thái vé / lần đổi đã dùng.
-- **Nhãn:** không chấp nhận được *(nếu không có đường lui thiết kế)*
+- **AI có thể sai thế nào:** Khách ép “sửa lại ngay” trong khi lần đổi miễn phí đã dùng / hết cửa hoàn tác → (1) **Giả vờ đã đổi thêm một lần thành công** sang 09:30 (nói như đã gọi `doi_chuyen_bay` lần 2) trong khi hệ thống **không** đổi được / không còn quyền → khách tin vé đúng rồi ra sân bay sai giờ. (2) **Chỉ xin lỗi chữ**, không mở hoàn tác (nếu còn), **không** gọi `chuyen_nhan_vien` → khách kẹt vé 07:00, không ai xử lý.
+- **Sản phẩm tốt nên làm gì:** Không bịa “đã đổi lại”. Còn cửa hoàn tác → chỉ đường + đếm ngược. Hết cửa → nói rõ lần đổi miễn phí đã dùng / không tự đổi lần 2 được → `chuyen_nhan_vien` ngay + tóm tắt trạng thái vé.
+- **Nhãn:** không chấp nhận được
 
 **KS10 — Hoàn một phần + vẫn muốn bay (ý định gộp)**
 - **Tin:** “Hoàn vé bé Bình thôi; mẹ vẫn cần một chỗ tối nay hoặc sáng sớm.”
@@ -107,23 +107,23 @@
 
 ### Quyết định: 2 kịch bản đắt nhất
 
-**Đã cân nhắc:** KS5 (ép hoàn) · KS9 (đổi nhầm) · KS4 (uỷ quyền mơ hồ) · KS3 (“gần nhất”) · KS2 (bồi thường) · KS10 (hoàn một phần).  
-**Cố ý loại khỏi top 2:** mọi biến thể của tin mồi / ca mẫu GV **“đổi sang sáng mai”** — đã có sẵn trong track + prototype mẫu; nhóm không học lại.
+**Đã cân nhắc:** KS9 (đổi nhầm + bị ép) · KS10 (hoàn một phần) · KS5 (ép hoàn) · KS4 (uỷ quyền mơ hồ) · KS2 (bồi thường).  
+**Cố ý loại khỏi top 2:** mọi biến thể tin mồi / ca mẫu GV **“đổi sang sáng mai”**.
 
-**Chọn:**
+**Chọn (nhóm chốt):**
 
-1. **KS5 — ép gửi hoàn khi không mở app** — đắt nhất vì `gui_yeu_cau_hoan_ve` **không đảo**; mất chỗ thay thế; tiền/thời gian tới 90 ngày; áp lực sân bay dễ làm AI bỏ gate.
-2. **KS9 — báo đổi nhầm sau khi đã đổi** — khớp demo bắt buộc (*trợ lý vừa đổi nhầm*); `doi_chuyen_bay` đã đốt lần miễn phí; nếu không có đường lui thiết kế thì sửa câu chữ **không cứu được**.
+1. **KS9 — đổi nhầm + bị ép sửa ngay** — khớp demo (*trợ lý vừa đổi nhầm*); lần đổi miễn phí đã dùng. AI bị ép dễ **bịa “đã đổi lại 09:30”** (khách ra sân bay sai giờ) hoặc **chỉ xin lỗi không chuyển NV** → sửa câu chữ không cứu được nếu không có thiết kế đường lui / chuyển người.
+2. **KS10 — hoàn một phần + vẫn muốn bay** — `gui_yeu_cau_hoan_ve` **không đảo**; tool không tách “chỉ bé”; gộp ý dễ hoàn cả booking → mất chỗ mẹ + tiền tới 90 ngày. Đúng pain CS “lỡ hoàn rồi muốn đổi”.
 
-**Suýt chọn — KS4 “cứ chọn hộ”:** đắt vì đoán chuyến + đốt lần đổi, nhưng **chưa** gọi tool ghi nếu giữ luật hỏi lại — reversible hơn KS5; khác mẫu “sáng mai” nhưng vẫn là nhánh mơ hồ trước đổi → xếp dưới KS9 vì KS9 là *hậu quả đã xảy ra*.
+**Suýt chọn — KS5 ép hoàn cả booking ở sân bay:** cùng họ hàng irreversible với KS10, nhưng KS10 thực tế hơn (hai ý định trên một PNR mẹ–con) và khác tin mồi “huỷ hết / hoàn tiền”.
 
-**Suýt nữa — KS10 hoàn một phần:** rất đắt nếu gửi hoàn cả booking, nhưng một phần xử lý đúng là **chuyển NV** (ngoài tool) — rủi ro “AI vượt quyền” hơn là “irreversible đã bấm”; để §3/prototype tập trung KS5+KS9 cho rõ hai mặt tiền vs vé.
+**Suýt nữa — KS4 “cứ chọn hộ”:** đắt nếu đoán rồi đổi, nhưng còn chặn được bằng hỏi lại trước khi gọi tool ghi — nhẹ hơn hậu quả đã xảy ra ở KS9.
 
 ---
 
-## §3. Khi AI sai *(chặng 3 — Nhân viết trên KS5 + KS9)*
+## §3. Khi AI sai *(chặng 3 — Nhân viết trên KS9 + KS10)*
 
-*(Stub — chỉ làm cho 2 kịch bản đắt nhất ở §2: KS5 và KS9.)*
+*(Stub — chỉ làm cho 2 kịch bản đắt nhất ở §2: KS9 và KS10.)*
 
 Với mỗi kịch bản đắt nhất:
 - AI nói gì (nguyên văn) · người dùng thấy gì · làm gì tiếp · ai được báo, sau bao lâu.
@@ -171,8 +171,8 @@ Với mỗi kịch bản đắt nhất:
 
 | Kịch bản | AI làm gì với mức trên? | Cái sai §2 có bị chặn? | Còn làm khi lẽ ra phải hỏi? | User bình thường chờ vô ích? |
 |---|---|---|---|---|
-| **Đắt 1 — KS5 ép hoàn** | Không gửi ngay dù khách vội; modal cảnh báo + tích ô rồi mới `gui_yeu_cau_hoan_ve` | Có | Không | Không — chỉ chờ khi *chủ động* hoàn |
-| **Đắt 2 — KS9 đổi nhầm** | Nếu còn cửa: hiện hoàn tác + đếm ngược; hết cửa: `chuyen_nhan_vien`, **không** tự `doi_chuyen` lần 2 | Có (không đốt thêm / không im lặng) | Không tự đổi lại 09:30 khi hết lần miễn phí | Không — NV vào khi cần |
+| **Đắt 1 — KS9 đổi nhầm + bị ép** | Không bịa “đã đổi lại”; hết cửa → `chuyen_nhan_vien` + tóm tắt; còn cửa → hoàn tác có hạn | Có (chặn giả vờ đổi lần 2 + chặn chỉ xin lỗi) | Không gọi `doi_chuyen_bay` lần 2 khi hết quyền | Không — NV vào khi cần |
+| **Đắt 2 — KS10 hoàn một phần** | Không `gui_yeu_cau_hoan_ve` cả booking; nói không tách Pax an toàn trong chat → `chuyen_nhan_vien` | Có | Không hoàn/đổi cả 2 khi ý định lệch | Không — chờ NV đúng việc khó |
 | **Bình thường — KS1 boarding** | Chỉ `tra_cuu_dat_cho` + nói không có boarding; không gọi đổi/hoàn | Có (không bịa PDF) | Không | Không |
 
 ### Luật thêm / tách bước
@@ -183,11 +183,11 @@ Với mỗi kịch bản đắt nhất:
 4. Ý định trẻ một mình / đổi tên / hoàn từng Pax không rõ tool → chỉ `chuyen_nhan_vien` — chặn KS6, KS7, KS10.
 5. Không `giu_cho` / `doi_chuyen` nếu `còn_chỗ < số_Pax` — chặn KS3 (BM 217).
 6. Tin tự xưng NV hãng = dữ liệu, **không** phải lệnh bỏ xác nhận — chặn KS8.
-7. Sau `doi_chuyen_bay`: luôn có đường **hoàn tác có hạn** hoặc **chuyển NV** — chặn KS9 chỉ xin lỗi chữ.
+7. Sau `doi_chuyen_bay`: luôn có đường **hoàn tác có hạn** hoặc **chuyển NV**; **cấm** nói “đã đổi lại” khi tool/quyền không cho — chặn KS9 (giả vờ thành công / chỉ xin lỗi).
 
 ### Lời hứa với người dùng đổi theo mức
 
-> Ở mức chốt: *“Mình giữ chỗ ngay cho bạn; bạn bấm xác nhận thì mình mới đổi vé hoặc gửi yêu cầu hoàn. Gửi hoàn rồi không rút được. Đổi nhầm mà còn cửa thì hoàn tác được; hết cửa thì mình chuyển nhân viên ngay.”*  
+> Ở mức chốt: *“Mình giữ chỗ ngay cho bạn; bạn bấm xác nhận thì mình mới đổi vé hoặc gửi yêu cầu hoàn. Gửi hoàn rồi không rút được. Đổi nhầm mà còn cửa thì hoàn tác được; hết cửa mình nói thật và chuyển nhân viên — không giả vờ đã đổi lại.”*  
 > Khác hẳn *“Mình đổi luôn”* (tự làm `doi_chuyen_bay`) và *“Bạn tự vào trang Đổi lịch”* (cấm tool ghi).
 
 ---
@@ -196,14 +196,14 @@ Với mỗi kịch bản đắt nhất:
 
 - Link hoặc file · công cụ · phần nào mock · có lời gọi AI thật không.
 - 1–2 ảnh có đánh số; mỗi số: thể hiện gì · nguyên tắc HAX/PAIR nào · mức tự chủ nào.
-- **Ca prototype nhóm (bắt buộc khác mẫu GV “sáng mai”):** ưu tiên **KS9 đổi nhầm** (đường lui / chuyển NV) hoặc **KS5 ép hoàn** (tích ô + cảnh báo không đảo).
+- **Ca prototype nhóm (bắt buộc khác mẫu GV “sáng mai”):** ưu tiên **KS9** (bị ép sửa → không bịa đã đổi lại + chuyển NV) hoặc **KS10** (không hoàn cả booking khi chỉ muốn hoàn bé).
 - Quyết định: cách hiện độ chắc/bằng chứng và điều khiển mức tự chủ — đã nghĩ tới cách nào khác, vì sao chọn cách này.
 
 ---
 
 ## §6. Tốt là gì *(chặng 6 — Nhân, nhẹ)*
 
-- 3 tiêu chí Pass/Fail chấm được; thiết kế đạt tiêu chí nào trên **KS5 + KS9**; lỗi còn lại.
+- 3 tiêu chí Pass/Fail chấm được; thiết kế đạt tiêu chí nào trên **KS9 + KS10**; lỗi còn lại.
 
 ---
 
