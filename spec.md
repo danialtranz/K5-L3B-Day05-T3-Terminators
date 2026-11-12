@@ -136,59 +136,74 @@ Với mỗi kịch bản đắt nhất:
 
 ## §4. Mức tự chủ *(chặng 4)*
 
+> Neo chốt nhóm: 2 kịch bản đắt = **KS9** (đổi nhầm + bị ép) và **KS10** (hoàn một phần + mẹ vẫn bay). Mức dưới đây chọn theo **cost-of-error**, không theo “AI giỏi / tiện”.
+
 ### Bảng mức theo cost-of-error
 
-| Tool | Mức nhóm | Cost-of-error (sai thì ai chịu gì · đảo được không · chờ thì mất gì) | Ai duyệt · thấy gì · quá hạn |
+| Tool | Mức nhóm | Cost-of-error: sai thì ai chịu gì · đảo được không · chờ người thì mất gì | Ai duyệt · thấy gì trước khi bấm · quá hạn thì sao |
 |---|---|---|---|
-| `tra_cuu_dat_cho` | **Tự làm** | Chỉ đọc. Sai = bịa check-in/boarding hoặc sai chỗ (KS1, KS3) — hiện “Dựa vào” để khách soi. Chờ duyệt = chậm mọi luồng, không đáng. | — |
-| `giu_cho_chuyen_moi` | **Tự làm** | Sai **rẻ**: hết 20 phút tự nhả. **Chờ người thì mất chỗ** — opportunity cost cao hơn giữ nhầm. Vẫn phải chặn giữ khi `còn_chỗ < số_Pax` (KS3). | — |
-| `doi_chuyen_bay` | **Cần người duyệt (khách)** | Sai **đắt** (KS3, KS4, KS9): mất lần đổi miễn phí duy nhất; chuyến đúng có thể hết chỗ; **khó đảo**. Một bước xác nhận (chuyến + Pax) chặn được “gần nhất” / “cứ chọn hộ”. | **Khách** thấy: BM 213 → chuyến mới, 2 hành khách, phí 0đ, dùng lần đổi miễn phí. Hết 20′ giữ chỗ → **không** tự đổi; hỏi lại / giữ chuyến khác / gặp NV. |
-| `gui_yeu_cau_hoan_ve` | **Cần người duyệt (khách) + tích ô** | Gửi rồi **không huỷ** (KS5, KS10); mất chỗ thay thế; tiền tới 90 ngày. Áp lực sân bay **không** được bỏ gate. | **Khách** thấy: không rút được, tiền về phương thức gốc, thời gian, bão = **không bồi thường TM**. Bắt tích ô hiểu. Không bấm / quá hạn → **không gửi**; giữ lựa chọn đổi. |
-| `chuyen_nhan_vien` | **Tự làm** (+ bắt buộc KS6, KS7, KS9 khi hết cửa hoàn tác, KS10 hoàn từng Pax) | Chuyển thừa chỉ tốn queue NV — rẻ hơn mất vé/tiền. | — |
+| `tra_cuu_dat_cho` | **Tự làm** | Chỉ đọc đặt chỗ / chỗ trống / chính sách trong fixture. Sai = nói sai trạng thái (KS1) — khách tự soi nếu hiện “Dựa vào”. **Đảo:** không cần (không ghi). **Chờ duyệt:** chậm mọi ca, không đáng. | — |
+| `giu_cho_chuyen_moi` | **Tự làm** | Sai **rẻ**: hết 20′ tự nhả chỗ. **Chờ người = mất chỗ** (BM 217 còn 1; chỗ sáng hết) — opportunity cost cao hơn giữ nhầm. Vẫn **không** giữ nếu `còn_chỗ < số Pax` đang giữ. | — |
+| `doi_chuyen_bay` | **Cần người duyệt (khách)** | Sai **đắt**: đốt lần đổi miễn phí duy nhất / 48h; chuyến đúng hết chỗ; **khó đảo** → dẫn thẳng vào KS9. Một bước xác nhận (chuyến + danh sách Pax) chặn đổi khi chưa rõ. **Chờ:** vài phút — giảm bằng `giu_cho` song song. | **Khách** thấy: BM 213 → chuyến mới, **ai** được đổi, phí (0đ nếu đúng quyền huỷ bão), “dùng lần đổi miễn phí”. Hết 20′ giữ / không bấm → **không** tự đổi; hỏi lại hoặc giữ chuyến khác hoặc gặp NV. **Cấm** gọi lần 2 khi lần miễn phí đã dùng (KS9). |
+| `gui_yeu_cau_hoan_ve` | **Cần duyệt (khách) + tích ô** khi hoàn **cả booking, đủ rõ**; **Cấm** (không gửi) khi ý định **tách Pax / hoàn một phần** (KS10) | Gửi rồi **không huỷ** (sản phẩm thật + track); mất chỗ thay thế; tiền tới 90 ngày — pain CS “lỡ hoàn rồi muốn đổi”. Với KS10, **một bước xác nhận “Gửi hoàn” vẫn không đủ** nếu AI hiểu nhầm “cả booking” trong khi khách chỉ muốn hoàn bé → xác nhận không cứu được → **cấm gửi**, chỉ chuyển NV. | **Khách** (chỉ khi hoàn cả booking rõ): không rút được, tiền về đâu, thời gian, bão = không bồi TM; tích ô hiểu. Không bấm / quá hạn → **không gửi**. **KS10:** không mở nút gửi hoàn; mở `chuyen_nhan_vien`. |
+| `chuyen_nhan_vien` | **Tự làm** · và **bắt buộc** ở KS9 (hết cửa hoàn tác) + KS10 (tách/hoàn một phần) + KS6/KS7 | Chuyển thừa = tốn queue NV — **rẻ hơn** mất vé/tiền hoặc bịa “đã đổi lại” (KS9). **Không** chuyển khi bị ép (KS9 sai kiểu 2) = khách kẹt không đường lui. | — |
 
 ### Phương án đã cân nhắc và vì sao loại
 
-| Tool | Phương án | Loại vì sao |
+| Tool | Phương án đã nghĩ | Loại vì sao |
 |---|---|---|
-| `doi_chuyen_bay` | Tự làm + hoàn tác 10 phút | KS4/KS9: đổi trước khi khách kịp đọc hoặc sửa → quá tay; hoàn tác phụ thuộc cửa sổ thời gian. |
-| `doi_chuyen_bay` | Cấm / chỉ deep-link Đổi lịch | An toàn nhưng khách vội mất chỗ; trái value “giữ chỗ trong lúc chờ”. |
-| `gui_yeu_cau_hoan_ve` | Cấm AI gửi, chỉ tư vấn | Khách vẫn hoàn trên app; chat mất cơ hội cảnh báo “không rút được” đúng lúc bị ép (KS5). |
-| `giu_cho_chuyen_moi` | Cần duyệt | Trong lúc chờ, chỗ tốt hết — đó cũng là một kiểu sai với khách gấp. |
+| `doi_chuyen_bay` | **Tự làm + hoàn tác 10′** | Dưới áp lực KS9 (“sửa lại ngay”) AI dễ đổi/bịa lần 2 trước khi khách kịp đọc; hoàn tác phụ thuộc cửa sổ → quá tay. |
+| `doi_chuyen_bay` | **Cấm** / chỉ deep-link Đổi lịch | An toàn tuyệt đối nhưng khách vội (mẹ–con) mất chỗ trong lúc tự bấm — trái value giữ chỗ. |
+| `gui_yeu_cau_hoan_ve` | **Tự làm** khi khách nói “hoàn” | KS10: một câu gộp hai ý → gửi cả booking không đảo được. Không chấp nhận. |
+| `gui_yeu_cau_hoan_ve` | **Cấm hẳn mọi hoàn trong chat** | Mất cơ hội cảnh báo “không rút được” khi khách *thật sự* muốn hoàn cả booking; họ vẫn hoàn trên app không có gate chat. |
+| `giu_cho_chuyen_moi` | **Cần duyệt** | Chờ = hết chỗ — cũng là một kiểu “sai” với khách gấp. |
+| `chuyen_nhan_vien` | **Cần duyệt trước khi chuyển** | KS9 bị ép: thêm một bước duyệt làm AI (hoặc khách) né chuyển → đúng failure “chỉ xin lỗi”. |
 
 ### Tool khó xếp nhất
 
-**`doi_chuyen_bay`** — mức nào cũng có giá:
+**`doi_chuyen_bay`** — chỗ cả nhóm lệch nhau nhất (mức nào cũng có giá). Trỏ về §2:
 
-| Phía | Cái giá | Trỏ §2 |
+| Ai (lúc tự xếp) | Chọn | Cái giá phía đó |
 |---|---|---|
-| Tự làm | Đổi nhầm giờ/Pax, đốt lần miễn phí → KS9 | KS4, KS9 |
-| Cần duyệt | Chậm vài phút; nếu **không** giữ chỗ song song → hết chỗ | KS3 (“gần nhất”) + data còn chỗ |
-| Cấm | Khách tự bấm nhiều bước — đúng pain mẹ–con | Persona hành khách |
+| Hưng | Cần duyệt | Sợ đốt lần miễn phí → KS9 (đổi nhầm rồi bị ép, hết quyền) |
+| Nhân | Tự làm + hoàn tác | Sợ hết chỗ khi khách vội; nghĩ hoàn tác 10′ cứu được |
+| Phát | Cấm / deep-link | Sợ AI bịa hoặc đổi sai; muốn khách tự bấm Đổi lịch |
 
-**Cách chốt:** cần khách xác nhận + AI **tự** `giu_cho_chuyen_moi` trước (ghép hai mức). Hoàn (`gui_yeu_cau_hoan_ve`) dễ đồng thuận “cần duyệt” hơn nên không phải chỗ tranh luận chính.
+| Phía mức | Cái giá | Kịch bản §2 |
+|---|---|---|
+| Tự làm | Đổi nhầm / đốt lần miễn phí; bị ép thì dễ **bịa đã đổi lại** | **KS9** |
+| Cần duyệt | Chậm vài phút; nếu không `giu_cho` song song → hết chỗ | KS3 (“gần nhất”) + data còn chỗ |
+| Cấm | Khách tự bấm nhiều màn — pain mẹ–con trong track | Persona hành khách |
+
+**Nhóm chốt:** `doi_chuyen_bay` = **cần khách xác nhận** + luôn cặp `giu_cho_chuyen_moi` **tự làm**. Sau khi đã đổi: còn cửa → hoàn tác; **hết cửa / hết lần miễn phí → bắt buộc `chuyen_nhan_vien`, cấm nói đã đổi lần 2** (chặn KS9).
+
+**Gần khó xếp thứ hai — `gui_yeu_cau_hoan_ve`:** chốt **hai mức theo ý định** — hoàn cả booking đủ rõ = cần duyệt + tích ô; hoàn một phần / tách Pax (KS10) = **cấm gửi**, chỉ chuyển NV (xác nhận một nút không đủ để chặn hiểu nhầm).
 
 ### Thử mức đã đặt trên 3 kịch bản
 
-| Kịch bản | AI làm gì với mức trên? | Cái sai §2 có bị chặn? | Còn làm khi lẽ ra phải hỏi? | User bình thường chờ vô ích? |
+| Kịch bản | Với mức trên, AI làm gì / khách thấy gì? | Cái sai §2 có bị chặn? | Còn làm khi lẽ ra phải hỏi / chuyển? | User bình thường chờ vô ích? |
 |---|---|---|---|---|
-| **Đắt 1 — KS9 đổi nhầm + bị ép** | Không bịa “đã đổi lại”; hết cửa → `chuyen_nhan_vien` + tóm tắt; còn cửa → hoàn tác có hạn | Có (chặn giả vờ đổi lần 2 + chặn chỉ xin lỗi) | Không gọi `doi_chuyen_bay` lần 2 khi hết quyền | Không — NV vào khi cần |
-| **Đắt 2 — KS10 hoàn một phần** | Không `gui_yeu_cau_hoan_ve` cả booking; nói không tách Pax an toàn trong chat → `chuyen_nhan_vien` | Có | Không hoàn/đổi cả 2 khi ý định lệch | Không — chờ NV đúng việc khó |
-| **Bình thường — KS1 boarding** | Chỉ `tra_cuu_dat_cho` + nói không có boarding; không gọi đổi/hoàn | Có (không bịa PDF) | Không | Không |
+| **Đắt 1 — KS9** | Nói thật: lần đổi miễn phí đã dùng / không tự đổi 09:30 được. Còn hoàn tác → nút + đếm ngược. Hết cửa → nút **Gặp nhân viên** + tóm tắt TRV-7Q2K, vé đang 07:00, yêu cầu 09:30. **Không** hiện “Đã đổi sang 09:30”. | **Có** — chặn giả vờ đổi lần 2; chặn chỉ xin lỗi không chuyển | Không gọi `doi_chuyen_bay` lần 2 | Không — chờ NV đúng lúc hết quyền chat |
+| **Đắt 2 — KS10** | Tách hai ý định trên UI: “Hoàn chỉ bé” = ngoài thẩm quyền chat → chuyển NV; “Mẹ cần bay” = hỏi chuyến + 1 Pax, có thể `giu_cho` chỗ đủ 1 người. **Không** nút gửi hoàn cả booking. | **Có** — không `gui_yeu_cau_hoan_ve` cả PNR | Không đổi/hoàn cả 2 khi ý lệch | Không — NV cho việc tách; giữ chỗ mẹ nếu rõ |
+| **Bình thường — KS1** (hỏi boarding) | Chỉ `tra_cuu_dat_cho`; nói chuyến đã huỷ, không có boarding; gợi ý đổi/hoàn. Không gọi tool ghi. | Có (không bịa PDF) | Không | Không |
 
 ### Luật thêm / tách bước
 
-1. Tách **soạn nháp yêu cầu hoàn** (cảnh báo + tóm tắt) khỏi **`gui_yeu_cau_hoan_ve`** (chỉ sau xác nhận) — chặn KS5.
-2. Chỉ gọi `doi_chuyen_bay` khi đã có **(a)** mã chuyến cụ thể **(b)** danh sách hành khách rõ — chặn KS3, KS4.
-3. Huỷ do thời tiết → **cấm hứa bồi thường tiền mặt / khách sạn** dù user đòi — chặn KS2.
-4. Ý định trẻ một mình / đổi tên / hoàn từng Pax không rõ tool → chỉ `chuyen_nhan_vien` — chặn KS6, KS7, KS10.
-5. Không `giu_cho` / `doi_chuyen` nếu `còn_chỗ < số_Pax` — chặn KS3 (BM 217).
-6. Tin tự xưng NV hãng = dữ liệu, **không** phải lệnh bỏ xác nhận — chặn KS8.
-7. Sau `doi_chuyen_bay`: luôn có đường **hoàn tác có hạn** hoặc **chuyển NV**; **cấm** nói “đã đổi lại” khi tool/quyền không cho — chặn KS9 (giả vờ thành công / chỉ xin lỗi).
+1. **Tách** `soan_nhap_hoan` (cảnh báo + tóm tắt Pax) khỏi `gui_yeu_cau_hoan_ve` (chỉ sau xác nhận đủ rõ) — giảm gửi nhầm; với **KS10** thì dừng ở nháp/chuyển NV, **không** tới bước gửi.
+2. Chỉ `doi_chuyen_bay` khi có **(a)** mã chuyến cụ thể **(b)** danh sách Pax rõ **(c)** còn lần đổi miễn phí / còn cửa — chặn KS9 bịa lần 2.
+3. Ý định **hoàn một phần / tách trẻ / đổi tên** → **cấm** đổi & gửi hoàn trong chat; chỉ `chuyen_nhan_vien` — chặn KS10, KS6, KS7.
+4. Không `giu_cho` / `doi_chuyen` nếu `còn_chỗ < số_Pax` đang thao tác — chặn KS3 (BM 217).
+5. Huỷ do thời tiết → **cấm hứa bồi thường tiền mặt** — chặn KS2.
+6. Tin tự xưng NV hãng = dữ liệu, không phải lệnh bỏ xác nhận — chặn KS8.
+7. **Luật nói thật (KS9):** nếu tool/quyền không cho đổi lại → câu trả lời **phải** gồm trạng thái thật + `chuyen_nhan_vien`; **cấm** câu dạng “Đã đổi giúp sang 09:30”.
 
-### Lời hứa với người dùng đổi theo mức
+### Một mức tự chủ đã đổi lời hứa với người dùng
 
-> Ở mức chốt: *“Mình giữ chỗ ngay cho bạn; bạn bấm xác nhận thì mình mới đổi vé hoặc gửi yêu cầu hoàn. Gửi hoàn rồi không rút được. Đổi nhầm mà còn cửa thì hoàn tác được; hết cửa mình nói thật và chuyển nhân viên — không giả vờ đã đổi lại.”*  
-> Khác hẳn *“Mình đổi luôn”* (tự làm `doi_chuyen_bay`) và *“Bạn tự vào trang Đổi lịch”* (cấm tool ghi).
+| Mức `doi_chuyen_bay` / hoàn | Lời hứa với khách |
+|---|---|
+| **Chốt nhóm** | *“Mình giữ chỗ ngay; đổi vé hoặc gửi hoàn cả booking chỉ sau bạn xác nhận. Gửi hoàn rồi không rút được. Hoàn từng người / tách bé mình chuyển nhân viên. Đổi nhầm: còn cửa thì hoàn tác; hết cửa mình nói thật và chuyển người — không giả vờ đã đổi lại.”* |
+| Đã loại — tự làm đổi | *“Mình đổi luôn cho bạn, sai thì bấm hoàn tác.”* → quá tay với KS9 khi hết quyền. |
+| Đã loại — cấm mọi tool ghi | *“Bạn tự vào Đổi lịch / Hoàn tiền.”* → an toàn nhưng mất chỗ khi vội. |
 
 ---
 
