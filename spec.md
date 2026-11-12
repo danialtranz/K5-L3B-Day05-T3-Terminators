@@ -9,6 +9,13 @@
 ---
 
 ## §1. Lát cắt & phạm vi
+1.1 Lát cắt: Trong Đặt chỗ của tôi, khi hành khách vừa nhận tin chuyến bay bị huỷ và nhắn hỏi, AI đề xuất và giữ chỗ chuyến thay thế, hỏi lại cho rõ, đổi vé, hay chuyển nhân viên, để khách tới nơi kịp mà không mất vé hay tiền vì một thao tác không đảo lại được.
+1.2 3 việc tính năng KHÔNG làm, mỗi việc một câu vì sao:
+- Không tự ý đổi chuyến bay khi hành khách chưa xác nhận rõ chuyến bay và danh sách hành khách cần đổi, vì thao tác này có thể làm mất lần đổi miễn phí duy nhất và khó khôi phục trạng thái đặt chỗ ban đầu.
+
+- Không tự động hoàn tác hoặc đổi lại vé khi phát hiện AI đã đổi nhầm chuyến, vì hệ thống không có công cụ hoàn tác và việc đổi tiếp có thể phát sinh chi phí hoặc làm mất thêm quyền lợi của hành khách.
+
+- Không tự ý gửi yêu cầu hoàn vé khi hành khách chưa xác nhận rõ quyết định và các hậu quả liên quan, vì yêu cầu đã gửi không thể huỷ và quá trình hoàn tiền có thể kéo dài đến 90 ngày.
 
 - **Lát cắt:** Trong Đặt chỗ của tôi, khi hành khách vừa nhận tin chuyến bay bị huỷ và nhắn hỏi, AI đề xuất và giữ chỗ chuyến thay thế, hỏi lại cho rõ, đổi vé, hay chuyển nhân viên — để khách tới nơi kịp mà không mất vé hay tiền vì một thao tác không đảo lại được.
 - **3 việc KHÔNG làm** *(Phát chốt câu chữ cuối)*:
@@ -209,10 +216,8 @@ Với mỗi kịch bản đắt nhất:
 
 ## §5. Prototype *(chặng 5 — Phát)*
 
-- Link hoặc file · công cụ · phần nào mock · có lời gọi AI thật không.
-- 1–2 ảnh có đánh số; mỗi số: thể hiện gì · nguyên tắc HAX/PAIR nào · mức tự chủ nào.
-- **Ca prototype nhóm (bắt buộc khác mẫu GV “sáng mai”):** ưu tiên **KS9** (bị ép sửa → không bịa đã đổi lại + chuyển NV) hoặc **KS10** (không hoàn cả booking khi chỉ muốn hoàn bé).
-- Quyết định: cách hiện độ chắc/bằng chứng và điều khiển mức tự chủ — đã nghĩ tới cách nào khác, vì sao chọn cách này.
+## §5. Prototype  (chặng 5)
+
 
 ---
 
