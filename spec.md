@@ -262,9 +262,3 @@ So với lựa chọn **“AI đổi luôn”**, người dùng được giữ q
 **Cách xác nhận tại demo:** chọn lần lượt ba tab, đối chiếu [1] với C2, [3] với C1, [2] với C3; mở hồ sơ hỗ trợ để xác nhận có PNR, tên hành khách, yêu cầu gốc và lịch sử. Phản hồi là mô phỏng theo từ khóa; không có log tool thật nên kết quả chỉ chứng minh **giao diện và logic kịch bản dựng**.
 
 **Lỗi còn lại:** KS9 chưa phục hồi quyền đổi miễn phí hoặc bảo đảm chỗ BM 205; KS10 không thu hồi yêu cầu hoàn đã gửi hoặc tự tách vé. Chưa kiểm thử hàng rào khách duyệt đổi/hoàn và quá hạn giữ chỗ của §4. Nhân viên thật chưa được kết nối, và các thông tin về tiền hoàn/cửa sổ hoàn tác trong prototype cần được hiệu chỉnh cho đúng fixture.
-
-**## §7. Demo&#x20;**_\*(sau demo — Hưng)\*_
-
-
-
-\- Ca lạ nhận được ở demo: prototype đã làm gì, và nhóm có đổi ý gì sau ca đó không.
