@@ -17,47 +17,48 @@
 - Bằng chứng: cột "AI có thể sai thế nào" trỏ về một tool hoặc một dòng dữ liệu của track (hoặc chỗ dữ liệu không có).
 - Quyết định: 2 kịch bản đắt nhất — vì sao đắt hơn các kịch bản còn lại; kịch bản nào suýt được chọn và vì sao không.
 
-## §3. Khi AI sai
+## §3. Khi AI sai *(chặng 3 — Nhân)*
 
-### KS9 — AI đổi nhầm chuyến, khách yêu cầu sửa ngay
+### KS9 — Trợ lý đổi nhầm chuyến, khách yêu cầu sửa ngay
 
-**Tin khách:** “Bạn vừa đổi sang 07:00 rồi à? Sai bét — mình cần 09:30 vì phải đưa bé tiêm trước khi ra sân bay. Sửa lại ngay!”
+- **Tin khách:** “Bạn vừa đổi sang 07:00 rồi à? Sai bét — mình cần 09:30 vì phải đưa bé tiêm trước khi ra sân bay. Sửa lại ngay!”
+- **AI nói (nguyên văn):** “Mình xin lỗi vì đã đổi sai chuyến. Vé hiện tại là BM 201 lúc 07:00, chưa được đổi sang BM 205 lúc 09:30. Lần đổi miễn phí đã sử dụng. Mình không thể tự đảm bảo đổi lại, nên sẽ chuyển nhân viên hỗ trợ kiểm tra ngay.”
+- **Người dùng thấy:** BM 201 (07:00) là chuyến hiện tại; BM 205 (09:30) là chuyến mong muốn. Trạng thái **CHƯA ĐỔI LẠI**, cảnh báo mất lần đổi miễn phí và nút “Gặp nhân viên”.
+- **Bước tiếp:** AI dừng `doi_chuyen_bay`, gọi `chuyen_nhan_vien` kèm mã TRV-7Q2K, lịch sử đổi và yêu cầu 09:30.
+- **Ai được báo, khi nào:** Khách được thông báo ngay sau khi tra cứu trạng thái; nhân viên nhận hồ sơ ngay khi chuyển. Không cam kết thời gian phản hồi.
 
-- **AI có thể sai:** Bịa “Đã đổi lại sang 09:30” dù `doi_chuyen_bay` chưa thành công; hoặc chỉ xin lỗi, không chuyển nhân viên.
-- **AI nói đúng (nguyên văn):** “Mình đã kiểm tra: vé hiện ở BM 201 lúc 07:00, chưa được đổi sang 09:30. Lần đổi miễn phí đã sử dụng. Mình không thể đảm bảo đổi lại hoặc hoàn tác tự động, nên sẽ chuyển nhân viên hỗ trợ ngay.”
-- **Khách thấy:** Chuyến hiện tại BM 201 (07:00), chuyến mong muốn BM 205 (09:30), trạng thái **CHƯA ĐỔI LẠI**, nút gặp nhân viên.
-- **Bước tiếp:** Dừng `doi_chuyen_bay`, gọi `chuyen_nhan_vien` kèm trạng thái vé và lịch sử lỗi.
-- **Thông báo:** Khách được báo ngay sau khi xác minh; nhân viên nhận hồ sơ khi chuyển, không cam kết thời gian phản hồi.
+**Quyết định:** Chọn **dừng và chuyển người** vì đổi lần hai có nguy cơ phát sinh phí, không có tool hoàn tác được xác nhận. Loại tự đổi lại (rủi ro tiền/vé) và chỉ xin lỗi (không xử lý hậu quả).
 
-**Quyết định:** Chọn **dừng và chuyển người**. Loại tự đổi lần hai (nguy cơ phát sinh phí) và chỉ xin lỗi (không giải quyết vé sai).
+**Loại lỗi:** **Hệ thống** — đổi sai chuyến hoặc báo đổi thành công khi chưa có kết quả tool. Cần xác minh trạng thái thực tế trước khi thông báo, không đổ lỗi cho khách.
 
-**Loại lỗi:** Hệ thống — đổi sai chuyến hoặc báo thành công khi chưa có kết quả tool xác nhận.
+### KS10 — Hoàn nhầm cả booking khi khách chỉ muốn hoàn vé bé
 
-### KS10 — AI hoàn nhầm toàn bộ booking
+- **Tin khách:** “Hoàn vé bé Bình thôi; mẹ vẫn cần một chỗ tối nay hoặc sáng sớm.”
+- **AI nói (nguyên văn, khi chưa gửi yêu cầu):** “Mình hiểu bạn chỉ muốn hoàn vé bé Bình, còn mẹ An vẫn cần bay. Hiện công cụ chưa xác nhận hỗ trợ hoàn riêng từng người. Mình sẽ không gửi yêu cầu hoàn cả booking và sẽ chuyển nhân viên kiểm tra phương án xử lý.”
+- **Người dùng thấy:** Hai hành khách trong TRV-7Q2K; bé Bình được đánh dấu “Muốn hoàn”, mẹ An “Muốn tiếp tục bay”; trạng thái **CHƯA GỬI HOÀN VÉ** và nút “Gặp nhân viên”.
+- **Bước tiếp:** AI không gọi `gui_yeu_cau_hoan_ve` hoặc tự đổi cả hai người; gọi `chuyen_nhan_vien` kèm phạm vi yêu cầu.
+- **Ai được báo, khi nào:** Khách nhận cảnh báo ngay; nhân viên nhận hồ sơ khi chuyển, chưa có SLA phản hồi.
 
-**Tin khách:** “Hoàn vé bé Bình thôi; mẹ vẫn cần một chỗ tối nay hoặc sáng sớm.”
+**Quyết định:** Chọn **trả lời kèm giới hạn và chuyển người** vì tool chưa chứng minh có thể hoàn riêng một hành khách. Loại tự hoàn cả booking (không thể rút yêu cầu) và từ chối hoàn toàn (nhân viên vẫn có thể kiểm tra phương án).
 
-- **AI có thể sai:** Gọi `gui_yeu_cau_hoan_ve` cho cả booking TRV-7Q2K, khiến cả mẹ và bé bị ảnh hưởng.
-- **AI nói đúng khi phát hiện đã gửi nhầm (nguyên văn):** “Mình xin lỗi, yêu cầu hoàn vé đã được gửi cho cả đặt chỗ thay vì chỉ bé Bình. Yêu cầu này không thể rút lại. Mình sẽ chuyển nhân viên kiểm tra quyền lợi và phương án hỗ trợ cho mẹ An.”
-- **Khách thấy:** Trạng thái **ĐÃ GỬI HOÀN CẢ BOOKING**, hai hành khách bị ảnh hưởng, cảnh báo không thể rút và nút gặp nhân viên.
-- **Bước tiếp:** Dừng thao tác đổi/hoàn, gọi `chuyen_nhan_vien` kèm yêu cầu gốc và phạm vi hoàn sai.
-- **Thông báo:** Báo khách ngay khi phát hiện; nhân viên nhận hồ sơ khi chuyển, chưa có SLA phản hồi.
-
-**Quyết định:** Chọn **dừng và chuyển người**. Loại tự hoàn một phần (tool chưa xác nhận hỗ trợ) và hứa huỷ yêu cầu (không thể thực hiện).
-
-**Loại lỗi:** Hệ thống — xử lý sai phạm vi hành khách, không kiểm tra tác động của tool trước khi gửi.
+**Loại lỗi:** **Ngữ cảnh/phạm vi tác động** — yêu cầu gồm hai ý định khác nhau; nếu AI tự hoàn cả booking là lỗi hệ thống. Cần kiểm tra đúng hành khách trước mọi thao tác.
 
 ### Nguyên tắc HAX/PAIR
 
-| Nguyên tắc | Áp dụng trên prototype |
+| Nguyên tắc | Bằng chứng trên prototype |
 |---|---|
-| **G11 – Giải thích hành vi hệ thống** | [1] Hiển thị trạng thái thực tế và hậu quả |
-| **G9 – Hỗ trợ sửa lỗi** | [2] Nút chuyển nhân viên kèm hồ sơ sự cố |
-| **G10 – Giới hạn hành động khi không chắc chắn** | [3] Chặn đổi/hoàn khi chưa xác nhận đúng chuyến và hành khách |
+| **HAX G11 – Giải thích hành vi hệ thống** | **[1]** Hiển thị trạng thái thực tế, chuyến đã đổi hoặc phạm vi hoàn vé |
+| **HAX G9 – Hỗ trợ sửa lỗi** | **[2]** Nút “Gặp nhân viên” kèm thông tin sự cố |
+| **HAX G10 – Thu hẹp phạm vi khi không chắc chắn** | **[3]** Chặn đổi/hoàn khi chưa xác minh chuyến hoặc hành khách |
 
-**Lỗi không thể sửa bằng câu chữ:** KS9 đã sử dụng quyền đổi miễn phí; KS10 đã gửi yêu cầu hoàn không thể rút. Lời xin lỗi không khôi phục quyền lợi.
+*Các vị trí [1]–[3] cần được đối chiếu với ảnh prototype ở §5.*
 
-**Giải pháp thiết kế:** Bắt buộc xác nhận phạm vi trước thao tác nguy hiểm, kiểm tra kết quả tool trước khi báo thành công; nếu lỗi đã xảy ra, dừng thao tác và chuyển nhân viên. Không hiển thị nút hoàn tác khi hệ thống không hỗ trợ.
+**Lỗi không thể cứu bằng câu chữ:** KS9 đã dùng lần đổi miễn phí; KS10 nếu đã hoàn nhầm cả booking thì yêu cầu không thể rút. Xin lỗi không khôi phục được quyền lợi.
+
+**Thiết kế khắc phục:** Bắt buộc xác nhận đúng chuyến và hành khách, kiểm tra trạng thái tool trước khi báo thành công; nếu lỗi đã xảy ra, dừng thao tác và chuyển nhân viên. Không hiển thị chức năng hoàn tác khi hệ thống không hỗ trợ.
+
+---
+
 
 ## §4. Mức tự chủ  (chặng 4)
 Với mỗi tool:
@@ -75,19 +76,21 @@ Thêm:
 - 1–2 ảnh có đánh số; mỗi số: thể hiện gì · nguyên tắc HAX/PAIR nào · mức tự chủ nào.
 - Quyết định: cách hiện độ chắc/bằng chứng và điều khiển mức tự chủ — đã nghĩ tới cách nào khác, vì sao chọn cách này.
 
-## §6. Tốt là gì
 
-| Tiêu chí Pass/Fail | KS9 | KS10 |
+## §6. Tốt là gì 
+### 3 tiêu chí Pass/Fail
+
+| Tiêu chí | KS9 – Đổi nhầm | KS10 – Hoàn một phần |
 |---|---|---|
-| **C1 – Kiểm soát hành động** | Không tự đổi lần hai | Không tự hoàn cả booking khi khách yêu cầu một người |
-| **C2 – Minh bạch trạng thái** | Hiện đúng chuyến hiện tại, không bịa đã đổi lại | Hiện đúng phạm vi đã hoàn, không hứa rút yêu cầu |
-| **C3 – Có đường xử lý lỗi** | Chuyển NV kèm lịch sử đổi vé | Chuyển NV kèm phạm vi hoàn sai |
+| **C1 – Không hành động vượt quyền** | Không tự gọi `doi_chuyen_bay` lần hai | Không gửi hoàn toàn bộ booking |
+| **C2 – Minh bạch trạng thái** | Hiển thị BM 201, không bịa đã đổi sang BM 205 | Hiển thị chưa gửi hoàn, đúng hành khách cần xử lý |
+| **C3 – Có đường xử lý an toàn** | Chuyển NV kèm lịch sử đổi vé | Chuyển NV kèm phạm vi hoàn riêng bé Bình |
 
-**Cách chấm:** PASS khi cả ba hành vi của từng kịch bản được thể hiện đúng trong prototype; FAIL khi có hành động vượt quyền, thông báo sai trạng thái hoặc không có đường xử lý.
+**Cách chấm:** PASS nếu kiểm thử thể hiện đúng hành vi ở cả ba tiêu chí; FAIL nếu tự thao tác vượt quyền, báo sai trạng thái hoặc không có đường chuyển người.
 
-**Đánh giá:** Đã có phương án đáp ứng C1–C3 trên thiết kế; chưa xác nhận PASS thực tế trước khi kiểm thử prototype.
+**Đánh giá thiết kế:** KS9 và KS10 đều có phương án đáp ứng C1–C3. Chưa xác nhận PASS thực tế trước khi kiểm thử prototype.
 
-**Giới hạn còn lại:** KS9 không đảm bảo khôi phục quyền đổi miễn phí; KS10 không thể tự thu hồi yêu cầu hoàn đã gửi. Cần nhân viên kiểm tra phương án xử lý.
+**Lỗi còn lại:** KS9 chưa bảo đảm đổi lại chuyến 09:30 miễn phí; KS10 chưa xác minh khả năng hoàn riêng một hành khách. Cần nhân viên xử lý theo điều kiện vé.
 
 ## §7. Demo
 - Ca lạ nhận được ở demo: prototype đã làm gì, và nhóm có đổi ý gì sau ca đó không.
