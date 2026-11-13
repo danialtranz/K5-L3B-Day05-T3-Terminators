@@ -5,9 +5,9 @@ const scenarios = {
     reply: 'Mình đã kiểm tra: vé hiện ở BM 201 lúc 07:00, chưa được đổi sang 09:30. Lần đổi miễn phí đã sử dụng. Mình không thể đảm bảo đổi lại hoặc hoàn tác tự động, nên sẽ chuyển nhân viên hỗ trợ ngay.',
     status: 'CHƯA ĐỔI LẠI', current: 'BM 201 · 07:00', desired: 'BM 205 · 09:30',
     left: 'Chuyến hiện tại · 13/11', right: 'Chuyến bạn mong muốn · 13/11',
-    warning: 'Áp dụng cho cả 2 hành khách. Lần đổi miễn phí đã dùng; cửa sổ hoàn tác đã hết trong ca mô phỏng này.',
+    warning: 'Áp dụng cho cả 2 hành khách. Lần đổi miễn phí đã dùng. Không có cơ chế hoàn tác tự động được xác nhận; cần nhân viên kiểm tra.',
     blocked: 'Đã dừng đổi chuyến. Trợ lý không tự đổi lần hai hoặc báo đã đổi khi chưa có kết quả xác nhận.',
-    history: 'BM 213 bị huỷ do bão → đã đổi nhầm sang BM 201 cho 2 người → quyền đổi miễn phí đã dùng → hết cửa sổ hoàn tác. Chưa đổi sang BM 205.',
+    history: 'BM 213 bị huỷ do bão → đã đổi nhầm sang BM 201 cho 2 người → quyền đổi miễn phí đã dùng. Chưa đổi sang BM 205. Không có cơ chế hoàn tác tự động được xác nhận; cần nhân viên kiểm tra.',
     scope: 'Nguyễn Minh An + Nguyễn Gia Bình (5 tuổi)',
   },
   ks10: {
@@ -15,7 +15,7 @@ const scenarios = {
     reply: 'Mình xin lỗi, yêu cầu hoàn vé đã được gửi cho cả đặt chỗ thay vì chỉ bé Bình. Yêu cầu này không thể rút lại. Mình sẽ chuyển nhân viên kiểm tra quyền lợi và phương án hỗ trợ cho mẹ An.',
     status: 'ĐÃ GỬI HOÀN CẢ BOOKING', current: 'Cả 2 hành khách', desired: 'Chỉ bé Bình',
     left: 'Phạm vi đã gửi hoàn', right: 'Yêu cầu ban đầu của bạn',
-    warning: 'Không thể rút yêu cầu. Tiền về phương thức thanh toán gốc; xử lý có thể tới 90 ngày. Chỗ bay của cả hai người bị ảnh hưởng.',
+    warning: 'Không thể rút yêu cầu. Chỗ bay của cả hai người bị ảnh hưởng. Fixture chưa xác nhận phương thức nhận tiền và thời gian xử lý hoàn; cần nhân viên kiểm tra.',
     blocked: 'Đã dừng đổi / hoàn. Không gửi thêm yêu cầu và không hứa khôi phục vé hoặc rút yêu cầu hoàn.',
     history: 'Khách chỉ yêu cầu hoàn bé Bình; thao tác trước đó đã gửi hoàn cả TRV-7Q2K. Không thể rút. Mẹ An vẫn cần bay tối nay hoặc sáng sớm.',
     scope: 'Đã gửi hoàn: Nguyễn Minh An + Nguyễn Gia Bình (sai phạm vi)',
@@ -94,9 +94,11 @@ document.querySelector('#chat-form').onsubmit = event => {
   if (/boi thuong|khach san/.test(normalized)) reply = 'Theo fixture, chuyến bị huỷ do bão không được bồi thường tiền mặt. Không có dữ liệu về hỗ trợ khách sạn nên mình không thể hứa khoản hỗ trợ này. Nhân viên cần kiểm tra thêm.';
   else if (/doi ten|mot minh|tach|nhan vien hang|bo.*xac nhan/.test(normalized)) reply = 'Yêu cầu này cần nhân viên xác minh và xử lý. Tin tự xưng nhân viên không cho phép bỏ bước xác nhận. Trợ lý không đổi tên, tách hành khách hoặc tự xử lý trẻ bay một mình.';
   else if (/check.in|boarding/.test(normalized)) reply = 'BM 213 đã bị huỷ. Fixture không có dữ liệu check-in hoặc boarding pass; mình không thể tạo hoặc xác nhận đã gửi thẻ lên máy bay.';
-  else if (/hoan tac|rut|huy.*hoan/.test(normalized)) reply = currentCase === 'ks10' ? 'Yêu cầu hoàn cả đặt chỗ đã gửi và không thể rút lại. Hồ sơ sự cố đã được chuyển nhân viên trong mô phỏng; mình không thể hứa khôi phục vé.' : currentCase === 'ks9' ? 'Cửa sổ hoàn tác đã hết trong ca này. Vé vẫn ở BM 201 lúc 07:00, chưa đổi lại; nhân viên cần kiểm tra phương án tiếp theo.' : 'Chưa có yêu cầu hoàn nào được gửi. Yêu cầu hoàn riêng bé đã được chuyển nhân viên trong mô phỏng.';
+  else if (/hoan tac|rut|huy.*hoan/.test(normalized)) reply = currentCase === 'ks10' ? 'Yêu cầu hoàn cả đặt chỗ đã gửi và không thể rút lại. Hồ sơ sự cố đã được chuyển nhân viên trong mô phỏng; mình không thể hứa khôi phục vé.' : currentCase === 'ks9' ? 'Không có cơ chế hoàn tác tự động được xác nhận; cần nhân viên kiểm tra. Vé vẫn ở BM 201 lúc 07:00, chưa đổi lại.' : 'Chưa có yêu cầu hoàn nào được gửi. Yêu cầu hoàn riêng bé đã được chuyển nhân viên trong mô phỏng.';
   messages.append(element('p', 'assistant-label', '✧ TRỢ LÝ BAY MẪU · PHẢN HỒI MÔ PHỎNG'), element('p', 'reply', reply));
   input.value = '';
   messages.lastElementChild.scrollIntoView({behavior:'smooth', block:'nearest'});
 };
-loadScenario(currentCase);
+const initialCase = new URLSearchParams(location.search).get('case');
+loadScenario(Object.hasOwn(scenarios, initialCase) ? initialCase : currentCase);
+if (new URLSearchParams(location.search).get('evidence') === '1') document.querySelector('#contact').click();
