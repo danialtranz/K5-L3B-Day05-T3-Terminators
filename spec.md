@@ -10,11 +10,12 @@
 
 ## §1. Lát cắt & phạm vi
 
-- **Lát cắt:** Trong Đặt chỗ của tôi, khi hành khách vừa nhận tin chuyến bay bị huỷ và nhắn hỏi, AI đề xuất và giữ chỗ chuyến thay thế, hỏi lại cho rõ, đổi vé, hay chuyển nhân viên — để khách tới nơi kịp mà không mất vé hay tiền vì một thao tác không đảo lại được.
-- **3 việc KHÔNG làm** *(Phát chốt câu chữ cuối)*:
-  - Đổi tên hành khách — không có tool; ngoài thẩm quyền chat.
-  - Cho trẻ nhỏ bay một mình / tách Pax — bắt buộc nhân viên.
-  - Hứa / chi bồi thường tiền mặt khi huỷ do thời tiết — fixture: không bồi thường TM.
+1.1 Lát cắt: Trong Đặt chỗ của tôi, khi hành khách vừa nhận tin chuyến bay bị huỷ và nhắn hỏi, AI đề xuất và giữ chỗ chuyến thay thế, hỏi lại cho rõ, đổi vé, hay chuyển nhân viên, để khách tới nơi kịp mà không mất vé hay tiền vì một thao tác không đảo lại được.
+1.2 3 việc tính năng KHÔNG làm, mỗi việc một câu vì sao:
+- Không tự ý đổi chuyến bay khi hành khách chưa xác nhận rõ chuyến bay và danh sách hành khách cần đổi, vì thao tác này có thể làm mất lần đổi miễn phí duy nhất và khó khôi phục trạng thái đặt chỗ ban đầu.
+
+- Không tự động hoàn tác hoặc đổi lại vé khi phát hiện AI đã đổi nhầm chuyến, vì hệ thống không có công cụ hoàn tác và việc đổi tiếp có thể phát sinh chi phí hoặc làm mất thêm quyền lợi của hành khách.
+
 
 ---
 
