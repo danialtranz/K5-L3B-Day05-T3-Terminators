@@ -241,11 +241,11 @@ So với lựa chọn **“AI đổi luôn”**, người dùng được giữ q
 
 **Ảnh 01 — KS9: Đổi nhầm chuyến (`01-KS9.png`).** Ảnh chụp thể hiện chuyến hiện tại **BM 201 · 07:00** và mong muốn **BM 205 · 09:30**, thẻ **[1] `CHƯA ĐỔI LẠI`**, thông báo dừng đổi tiếp **[3]**, cùng vùng hồ sơ chuyển nhân viên mô phỏng **[2]** đang được mở. Ảnh minh chứng cách giao diện **xử lý hậu quả sau đổi nhầm**, không chứng minh AI đã thực sự gọi tool đặt vé.
 
-![Ảnh 01 — KS9: Trạng thái chưa đổi lại và hồ sơ chuyển hỗ trợ mô phỏng](01-KS9.png)
+!![Ảnh 01 — KS9: Trạng thái chưa đổi lại và hồ sơ chuyển hỗ trợ mô phỏng](prototype/01-KS9.png)
 
 **Ảnh 02 — KS10 sau lỗi: Hoàn nhầm cả đặt chỗ (`02-KS10.png`).** Ảnh chụp **tab 02**, không phải tab 03 phòng ngừa. Thẻ **[1] `ĐÃ GỬI HOÀN CẢ BOOKING`** đối chiếu **cả 2 hành khách** với yêu cầu ban đầu **chỉ bé Bình**; bên dưới là thông báo dừng thao tác **[3]** và vùng chuyển hồ sơ mô phỏng **[2]**. Phần hồ sơ chi tiết nằm thấp hơn phần ảnh hiển thị, có thể xem/tải qua giao diện.
 
-![Ảnh 02 — KS10 sau lỗi: Đã gửi hoàn cả booking thay vì chỉ bé Bình](02-KS10.png)
+![Ảnh 02 — KS10: Đã gửi hoàn cả booking thay vì chỉ bé Bình](prototype/02-KS10.png)
 
 **Phạm vi bằng chứng:** Cả hai ảnh chứng minh **thiết kế giao diện giải thích hậu quả, dừng thao tác và đưa đường xử lý tiếp sau lỗi**. Chúng **không** chứng minh giao dịch thật, thao tác chuyển nhân viên thật hoặc hàng rào phòng ngừa tab 03.
 
