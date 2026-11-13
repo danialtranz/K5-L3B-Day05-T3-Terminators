@@ -1,10 +1,10 @@
 # Bài nộp LAB05 — T3 Du lịch · Nhóm Terminators
 
-| Thành viên | Việc chính |
-|---|---|
-| Hưng | §2 Kịch bản rủi ro · §4 Mức tự chủ · chốt demo (§7) |
-| Nhân | §3 Khi AI sai · §6 Tốt là gì |
-| Phát | §1 Lát cắt & phạm vi · §5 Prototype |
+| Thành viên |Mã Học Viên | Việc chính |
+|---|---| ---|
+| Trần Cảnh Hưng | 2A202603759 |§2 Kịch bản rủi ro · §4 Mức tự chủ · chốt demo (§7) |
+| Nguyễn Minh Nhân |2A202603723  |§3 Khi AI sai · §6 Tốt là gì |
+| Trương Đức Phát | 2A202603757 |§1 Lát cắt & phạm vi · §5 Prototype |
 
 ---
 
